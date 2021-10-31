@@ -1,0 +1,143 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:Converters="clr-namespace:Vodovoz.UI.Converters"
+                    
+                    xmlns:local="clr-namespace:Vodovoz.UI" 
+                    xmlns:converters="clr-namespace:Vodovoz.UI.Converters"
+                    xmlns:Controls="clr-namespace:Vodovoz.UI.Controls">
+
+    <Style x:Key="InputStackPanel" TargetType="{x:Type StackPanel}">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Height" Value="250"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Height, RelativeSource={RelativeSource Self},
+                Converter={converters:IsValueLessThanParameter},ConverterParameter=250}"
+                         Value="True">
+                <Setter Property="Width" Value="240"/>
+            </DataTrigger>
+        </Style.Triggers>
+        <Style.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="BorderBrush" Value="Gray"/>
+                <Setter Property="Height" Value="25"/>
+                <Setter Property="Margin" Value="0 12 0 0"/>
+                <Setter Property="Width" Value="180"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel},
+                Converter={converters:IsValueLessThanParameter},ConverterParameter=250}"
+                                 Value="True">
+                        <Setter Property="Margin" Value="0,0,0,0"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel},
+                Converter={converters:IsValueLessThanParameter},ConverterParameter=250}"
+                                 Value="False">
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="0 15 0 0"/>
+                <Setter Property="Width" Value="250"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path= Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel},
+                Converter={converters:IsValueLessThanParameter},ConverterParameter=250}"
+                                 Value="True">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Margin" Value="0,15,0,0"/>
+                        
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="0 15 0 0"/>
+                <Setter Property="Width" Value="180"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path= Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel},
+                Converter={converters:IsValueLessThanParameter},ConverterParameter=250}"
+                                 Value="True">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Margin" Value="0,15,0,0"/>
+
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="DefaultLabelTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Storyboard x:Key="MouseOverBorderStoryEnter">
+        <ThicknessAnimation Duration="0:0:0.400" To="3" Storyboard.TargetProperty="BorderThickness" />
+        <ColorAnimation 
+                Storyboard.TargetName="SolidBackground"
+                Storyboard.TargetProperty="Color"
+                From="AliceBlue" To="Gray" Duration="0:0:1" />
+    </Storyboard>
+
+    <Storyboard x:Key="MouseOverBorderStoryExit">
+        <ThicknessAnimation 
+                Duration="0:0:0.250" 
+                To="0" 
+                Storyboard.TargetProperty="BorderThickness" />
+        <ColorAnimation 
+                Storyboard.TargetName="SolidBackground"
+                Storyboard.TargetProperty="Color"
+                From="Gray" To="AliceBlue" Duration="0:0:1" />
+    </Storyboard>
+
+    <Style TargetType="{x:Type Controls:IconButton}" x:Key="IconButtonStyle">
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border x:Name="border" BorderBrush="DarkGray"
+                            BorderThickness="1" CornerRadius="0"
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="35"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:ImageAwesome Margin="10,0,0,0" Icon="{Binding Path=Icon,RelativeSource={RelativeSource AncestorType={x:Type Controls:IconButton},Mode=FindAncestor}}" Height="17">
+                                <fa:ImageAwesome.Foreground>
+                                    <SolidColorBrush Color="Black" x:Name="IconForeGroundColor"/>
+                                </fa:ImageAwesome.Foreground>
+                            </fa:ImageAwesome>
+                            <TextBlock Grid.Column="1" 
+                                Width="{Binding Path=Width,RelativeSource={RelativeSource AncestorType={x:Type Controls:IconButton},Mode=FindAncestor}}"
+                                Text="{Binding Path=Text,RelativeSource={RelativeSource AncestorType={x:Type Controls:IconButton},Mode=FindAncestor}}"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                Margin="10,0,8,0" FontSize="16" />
+                        </Grid>
+                        <Border.Background>
+                            <SolidColorBrush Color="AliceBlue" x:Name="SolidBackground"/>
+                        </Border.Background>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard Storyboard="{DynamicResource MouseOverBorderStoryEnter}"/>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard Storyboard="{DynamicResource MouseOverBorderStoryExit}"/>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Controls:IconButton}" BasedOn="{StaticResource IconButtonStyle}"/>
+</ResourceDictionary>

@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="Vodovoz.UI.View.EmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:VM="clr-namespace:Vodovoz.UI.ViewModel"
+             xmlns:controls="clr-namespace:Vodovoz.UI.Controls"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <VM:EmployeeViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="13"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="0"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <StackPanel Margin="5 0 0 0"
+                            Style="{StaticResource InputStackPanel}"
+                            Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}},Path=ActualWidth}">
+                    <TextBlock Text="Фамилия:"/>
+                    <TextBlock Text="Имя :"/>
+                    <TextBlock Text="Отчество:"/>
+                    <TextBlock Text="Дата рождения:"/>
+                    <TextBlock Text="Пол:"/>
+                    <TextBlock Text="Подразделение:"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Style="{StaticResource InputStackPanel}"
+                            Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}},Path=ActualWidth}">
+                    <TextBox x:Name="SurnameEmployee"
+                        Text="{Binding EditerEmployee.GetEmployee.Surname}"/>
+                    <TextBox 
+                        Text="{Binding EditerEmployee.GetEmployee.Name}"/>
+                    <TextBox 
+                        Text="{Binding EditerEmployee.GetEmployee.Patronimyc}"/>
+                    <TextBox 
+                        Text="{Binding EditerEmployee.GetEmployee.BirthDate, StringFormat='yyyy.MM.dd'}"/>
+                    <ComboBox ItemsSource="{Binding Genders }" SelectedValue="{Binding EditerEmployee.Gender}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource DefaultLabelTextBlockStyle}" Text="{Binding}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Division}" SelectedValue="{Binding EditerEmployee.GetEmployee.Division}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource DefaultLabelTextBlockStyle}" Text="{Binding Title}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <controls:IconButton HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding  ModifySelectedEmployeeCommand}" Grid.Row="2" Icon="PlusCircle" Grid.ColumnSpan="2" Text="Сохранить изменения">
+                    <controls:IconButton.Style>
+                        <Style TargetType="{x:Type controls:IconButton}" BasedOn="{StaticResource IconButtonStyle}">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=NameOfProduct, Path=Text}" Value="{x:Static sys:String.Empty}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:IconButton.Style>
+                </controls:IconButton>
+                <controls:IconButton Command="{Binding CancelCommand}" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Icon="Refresh" Text="Отменить">
+                    <Style TargetType="{x:Type controls:IconButton}" BasedOn="{StaticResource IconButtonStyle}">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=NameOfProduct, Path=Text}" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:IconButton>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" Background="Silver"/>
+
+        <ScrollViewer Grid.Column="2">
+            <ItemsControl ItemsSource="{Binding Employees}" Background="WhiteSmoke">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding GetEmployee.Surname}" Grid.Column="0"/>
+                            <controls:IconButton 
+                                Command="{Binding Selected}"
+                                CommandParameter="Edit"
+                                Text="Изменить"   Grid.Column="2" 
+                                Width="130" VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Icon="PencilSquareOutline"/>
+                            <controls:IconButton 
+                                Command="{Binding Selected}"
+                                CommandParameter="Remove"
+                                Text="Remove"  Grid.Column="3" 
+                                Width="50" VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Icon="Remove"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </ScrollViewer>
+    </Grid>
+</UserControl>
